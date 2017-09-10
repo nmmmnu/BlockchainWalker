@@ -63,7 +63,7 @@ class BlockchainWalker{
 
 		// First, lets check directly
 		{
-			$direct_vout = $data["vout"][$no];
+			$direct_vout = & $data["vout"][$no];
 
 			if ($direct_vout["n"] == $no){
 				//echo "Direct hit ;)\n";
