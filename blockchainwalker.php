@@ -136,6 +136,12 @@ class BlockchainWalker{
 			// normal address
 			return true;
 
+		case "multisig":
+			// Multi Signature
+			// We will wrongly assume that all funds go to first address
+			// 60a20bd93aa49ab4b28d514ec10b06e1829ce6818ec06cd3aabd013ebcdc4bb1
+			return true;
+
 		default:
 			print_r($this->rpc->getTx($tx));
 			self::error__("No idea what this is...");
