@@ -41,20 +41,20 @@ class BlockchainWalker{
 	private function bl_($bl){
 		$data = $this->validate__($this->rpc->getBl($bl));
 
-		foreach($data["tx"] as $tx){
+		foreach($data["tx"] as & $tx){
 			$this->tx_($tx);
 		}
 
 		return $data["nextblockhash"];
 	}
 
-	private function tx_($tx){
+	private function tx_(& $tx){
 		$data = $this->validate__($this->rpc->getTx($tx));
 
-		foreach($data["vin"] as $vin)
+		foreach($data["vin"] as & $vin)
 			$this->decodeTxIn_($tx, $vin);
 
-		foreach($data["vout"] as $vout)
+		foreach($data["vout"] as & $vout)
 			$this->decodeTxOut_($tx, $vout);
 	}
 
@@ -76,7 +76,7 @@ class BlockchainWalker{
 
 		// ...then, because we can not be sure this is sorted,
 		// lets try linear search
-		foreach($data["vout"] as $vout)
+		foreach($data["vout"] as & $vout)
 			if ($vout["n"] == $no)
 				return $this->findTxOutput2_($tx, $no, $vout);
 
