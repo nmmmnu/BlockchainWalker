@@ -32,7 +32,7 @@ class TxPack{
 		$del = "|";
 
 		return sprintf(
-			"TX: %-69"	. $del .
+			"TX: %-69s"	. $del .
 			"Addr: %-34s"	. $del .
 			"BTC: %.8f",
 			$txno, $this->address, $this->value

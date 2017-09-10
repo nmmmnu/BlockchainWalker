@@ -10,7 +10,7 @@ class JSONRPC{
 		$this->pass	= $pass;
 	}
 
-	private static function post__($url, $user, $pass, $data){
+	private static function post__($url, $user, $pass, & $data){
 		$ch = curl_init();
 
 		curl_setopt($ch, CURLOPT_URL, $url);

@@ -20,7 +20,7 @@ class BlockchainWalker{
 
 	private function validate__($data){
 		if ($data === false)
-			self::error__("Invalid data for block " . $currentBlock);
+			self::error__("Invalid data for block " . $this->currentBlock);
 
 		return $data;
 	}

@@ -51,8 +51,8 @@ class BitcoindRPC{
 		return $this->decodeTx(self::getTX0_Raw());
 	}
 
-	function decodeTx($hash){
-		return $this->json_exec_("decoderawtransaction", [ $hash ]);
+	function decodeTx($large_hash){
+		return $this->json_exec_("decoderawtransaction", [ $large_hash ]);
 	}
 
 	private static function getTX0_Raw(){
