@@ -9,7 +9,7 @@ class BlockchainWalker{
 	private $writter;
 	private $currentBlock;
 
-	function __construct(BitcoindRPC $rpc, Writter $writter, $startBlock = BL0){
+	function __construct(BitcoindRPC $rpc, Writter $writter, $startBlock = self::BL0){
 		$this->rpc		= $rpc;
 		$this->writter		= $writter;
 		$this->currentBlock	= $startBlock;
@@ -103,7 +103,15 @@ class BlockchainWalker{
 		if ($this->decodeTxVOut_($tx, $vout) == false)
 			return;
 
-		$address	= $vout["scriptPubKey"]["addresses"][0];
+		if (isset($vout["scriptPubKey"]["addresses"][0])){
+			$address	= $vout["scriptPubKey"]["addresses"][0];
+		}else{
+			// strange case with invalid address, that can not be spent.
+			// 71bbaef28e09d8d6fadd41f053db7768dbb5fa4570f06b961dfc29db3dc00b1d
+			// https://github.com/MetacoSA/NBitcoin/issues/47
+
+			$address	= "_invalid_address_";
+		}
 
 		$output		= new TxPack($tx, $no, $address, $value);
 

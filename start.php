@@ -9,9 +9,9 @@ require_once "writter/keyvaluewritter.php";
 require_once "writter/zusewritter.php";
 
 //$writter = new BlackHoleWritter();
-$writter = new CommentWritter(true, true);
+//$writter = new CommentWritter(true, true);
 //$writter = new KeyValueWritter();
-//$writter = new ZuseWritter("127.0.0.1:2000");
+$writter = new ZuseWritter("127.0.0.1:2000");
 
 $host = "192.168.0.3";
 
