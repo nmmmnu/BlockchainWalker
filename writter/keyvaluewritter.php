@@ -6,36 +6,35 @@ class KeyValueWritter implements Writter{
 		printf("%s\t%s\n", $key, $value);
 	}
 
-	private static function f__($value){
-		return sprintf("%.8f", $value);
-	}
+	function in($tx, $txoutput, $no){
+		$key = "t:" . txno($tx) . ":i:" . txno($txoutput, $no);
+		$val = "1";
 
-	private static function av__(TxPack $txp){
-		return $txp->address . ":" . self::f__($txp->value);
-	}
+		$this->write_($key,	$val);
 
-	function in($tx, TxPack $txp){
-		$input = $txp->txno2($tx);
+		// --------------
 
-		$key = "t:" . $input . ":-:" . $txp->txno();
+		$key = "t:" . txno($txoutput, $no) . ":s";
+		$val = $tx;
 
-		$this->write_($key,	self::av__($txp));
-
-		$key = "a:" . $txp->address . ":-:" . $input;
-
-		$this->write_($key,	self::f__($txp->value));
+		$this->write_($key,	$val);
 	}
 
 	function out(TxPack $txp){
-		$output = $txp->txno();
+		$output = txno($txp->tx, $txp->no);
+		$btc = format_value($txp->value);
 
-		$key = "t:" . $output . ":+:";
+		$key = "t:" . $output . ":o";
+		$val = $txp->address . ":" . $btc;
 
-		$this->write_($key,	self::av__($txp));
+		$this->write_($key,	$val);
 
-		$key = "a:" . $txp->address . ":+:" . $output;
+		// --------------
 
-		$this->write_($key,	self::f__($txp->value));
+		$key = "a:" . $txp->address . ":" . $output;
+		$val = $btc;
+
+		$this->write_($key,	$val);
 	}
 }
 

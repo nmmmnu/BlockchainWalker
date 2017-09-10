@@ -10,10 +10,19 @@ class CommentWritter implements Writter{
 		$this->out = $out;
 	}
 
-	function in($tx, TxPack $txp){
+	private static function txno__($tx, $no){
+		return $tx . "." . $no;
+	}
+
+	function in($tx, $txoutput, $no){
 		if ($this->in){
-			echo $txp->asString2($tx);
-			echo "\n";
+			$del = "|";
+
+			printf(
+				"TX: %-69s"	. $del .
+				"TXOUT: %-69s" . "\n",
+				$tx, self::txno__($txoutput, $no)
+			);
 		}
 	}
 

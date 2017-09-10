@@ -13,21 +13,6 @@ class BlockchainWalker{
 		$this->currentBlock	= $startBlock;
 	}
 
-	private $mt = 0;
-	private function microtime__($message){
-		list($usec, $sec) = explode(" ", microtime());
-		$now = (float)$usec + (float)$sec;
-
-		if($this->mt)
-			$diff = $now - $this->mt;
-		else
-			$diff = 0;
-
-		printf("MICROTIME: %.4f | %s\n", $diff, $message);
-
-		$this->mt = $now;
-	}
-
 	private static function error__($message){
 		echo "ERROR: $message\n";
 		exit;
@@ -44,35 +29,70 @@ class BlockchainWalker{
 		$count = 0;
 
 		while(true){
+			echo "BL:" . $this->currentBlock . "\n";
+
 			$this->currentBlock = $this->bl_($this->currentBlock);
 
-		//	if ($count++ > 100)
-		//		exit;
+			if ($count++ > 100)
+				exit;
 		}
 	}
 
 	private function bl_($bl){
-		$this->microtime__("BL " . $bl);
 		$data = $this->validate__($this->rpc->getBl($bl));
 
-		$this->microtime__("TX'es " . count($data["tx"]));
-		foreach($data["tx"] as $tx){
+		foreach($data["tx"] as & $tx){
 			$this->tx_($tx);
 		}
 
 		return $data["nextblockhash"];
 	}
 
-	private function tx_($tx){
+	private function tx_(& $tx){
 		$data = $this->validate__($this->rpc->getTx($tx));
 
-		foreach($data["vin"] as & $vin){
+		foreach($data["vin"] as & $vin)
 			$this->decodeTxIn_($tx, $vin);
+
+		foreach($data["vout"] as & $vout)
+			$this->decodeTxOut_($tx, $vout);
+	}
+
+	private function findTxOutput_($tx, $no){
+		$data = $this->validate__($this->rpc->getTx($tx));
+
+		// First, lets check directly
+		{
+			$direct_vout = & $data["vout"][$no];
+
+			if ($direct_vout["n"] == $no){
+				//echo "Direct hit ;)\n";
+
+				return $this->findTxOutput2_($tx, $no, $direct_vout);
+			}
+
+			unset($direct_vout);
 		}
 
-		foreach($data["vout"] as & $vout){
-			$this->decodeTxOut_($tx, $vout);
-		}
+		// ...then, because we can not be sure this is sorted,
+		// lets try linear search
+		foreach($data["vout"] as & $vout)
+			if ($vout["n"] == $no)
+				return $this->findTxOutput2_($tx, $no, $vout);
+
+		self::error__("Can not find output $tx : $no");
+	}
+
+	private function findTxOutput2_($tx, $no, & $vout){
+		if ($this->decodeTxVOut_($tx, $vout) == false)
+			return false;
+
+		return new TxPack(
+			$tx,
+			$no,
+			$vout["scriptPubKey"]["addresses"][0],
+			$vout["value"]
+		);
 	}
 
 	private function decodeTxIn_($tx, & $vin){
@@ -91,7 +111,14 @@ class BlockchainWalker{
 		$txoutput	= $vin["txid"];
 		$no		= $vin["vout"];
 
-		$this->writter->in($tx, $txoutput, $no);
+		$prev_output	= $this->findTxOutput_($txoutput, $no);
+
+		if ($prev_output === false){
+			// probably segwit
+			return;
+		}
+
+		$this->writter->in($tx, $prev_output);
 	}
 
 	private function decodeTxOut_($tx, & $vout){
@@ -116,11 +143,6 @@ class BlockchainWalker{
 			// 70369c2c68d4d942fe3180c4e2a0b3d7add7b7b2cee6a27c09737482fa3b3ac2
 			return false;
 
-		case "nonstandard":
-			// Skip over
-			// e411dbebd2f7d64dafeef9b14b5c59ec60c36779d43f850e5e347abee1e1a455
-			return false;
-
 		case "witness_v0_keyhash":
 		case "witness_v0_scripthash":
 			// segwit
@@ -140,4 +162,3 @@ class BlockchainWalker{
 		}
 	}
 }
-

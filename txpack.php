@@ -1,4 +1,6 @@
 <?
+require_once "txfunctions.php";
+
 class TxPack{
 	public $tx;
 	public $no;
@@ -12,20 +14,12 @@ class TxPack{
 		$this->value	= $value	;
 	}
 
-	function txno(){
-		return $this->tx . "." . $this->no;
-	}
-
-	static function txno2($tx){
-		return $tx . "." . "-";
-	}
-
 	function asString(){
-		return $this->asString_($this->txno());
+		return $this->asString_( txno($this->tx, $this->no) );
 	}
 
 	function asString2($tx){
-		return $this->asString_(self::txno2($tx));
+		return $this->asString_( txno($tx) );
 	}
 
 	private function asString_($txno){
