@@ -3,11 +3,13 @@ require_once "bitcoindrpc.php";
 require_once "writter.php";
 
 class BlockchainWalker{
+	const BL0 = BitcoindRPC::BL0;
+
 	private $rpc;
 	private $writter;
 	private $currentBlock;
 
-	function __construct(BitcoindRPC $rpc, Writter $writter, $startBlock = BitcoindRPC::BL0){
+	function __construct(BitcoindRPC $rpc, Writter $writter, $startBlock = BL0){
 		$this->rpc		= $rpc;
 		$this->writter		= $writter;
 		$this->currentBlock	= $startBlock;
