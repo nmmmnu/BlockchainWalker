@@ -42,10 +42,12 @@ Here are how keys looks like if we want to find the balance for address "1EoMoJK
  2) "0.01270199"
 ```
 Result is as follows:
->>Funding transaction:
+```
+Funding transaction:
 28c76c9d89f23c1b1f5435d8f4bb5cc66e6cb9d0798f1f0f4293faaac88fb7d0, output 0
 Value:
 0.01270199
+```
 
 Then we need to check if this is spent, so we check each input as follows:
 ```
@@ -53,8 +55,10 @@ Then we need to check if this is spent, so we check each input as follows:
 "055bd8148143c5b05bc2808ccafe54be43b292381449d41cc23462d02d3f85d8"
 ```
 Result is as follows:
->>Transaction where input is spent:
+```
+Transaction where input is spent:
 055bd8148143c5b05bc2808ccafe54be43b292381449d41cc23462d02d3f85d8
+```
 
 As each output is spent this means the address 1EoMoJK3FJPHg4EwrP31zPVu4iLqmCtQ6 have balance of zero.
 
@@ -78,7 +82,9 @@ In case we want to check / list a transaction "055bd8148143c5b05bc2808ccafe54be4
 ```
 
 Results
->> Inputs: "t:xxxxx.-:i:xxxx".
+```
+Inputs: "t:xxxxx.-:i:xxxx".
 Outputs: "t:xxxxx.N:o"
 Spent indicators: "t:xxxxx.N:s"
+```
 
