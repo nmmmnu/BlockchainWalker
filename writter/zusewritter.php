@@ -12,5 +12,11 @@ class ZuseWritter extends KeyValueWritter{
 	protected function write_($key, $value){
 		$this->r->set($key, $value);
 	}
+
+	function getLastBlock($def){
+		$bl = $this->r->get(self::BL_KEY);
+
+		return ! isempty($bl) ? $bl : $def;
+	}
 }
 

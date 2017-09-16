@@ -14,6 +14,10 @@ class CommentWritter implements Writter{
 		return $tx . "." . $no;
 	}
 
+	function bl($bl){
+
+	}
+
 	function in($tx, $txoutput, $no){
 		if ($this->in){
 			$del = "|";

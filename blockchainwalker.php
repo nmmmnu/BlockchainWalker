@@ -15,21 +15,6 @@ class BlockchainWalker{
 		$this->currentBlock	= $startBlock;
 	}
 
-	private $mt = 0;
-	private function microtime__($message){
-		list($usec, $sec) = explode(" ", microtime());
-		$now = (float)$usec + (float)$sec;
-
-		if($this->mt)
-			$diff = $now - $this->mt;
-		else
-			$diff = 0;
-
-		printf("MICROTIME: %.4f | %s\n", $diff, $message);
-
-		$this->mt = $now;
-	}
-
 	private static function error__($message){
 		echo "ERROR: $message\n";
 		exit;
@@ -54,10 +39,8 @@ class BlockchainWalker{
 	}
 
 	private function bl_($bl){
-		$this->microtime__("BL " . $bl);
 		$data = $this->validate__($this->rpc->getBl($bl));
 
-		$this->microtime__("TX'es " . count($data["tx"]));
 		foreach($data["tx"] as $tx){
 			$this->tx_($tx);
 		}

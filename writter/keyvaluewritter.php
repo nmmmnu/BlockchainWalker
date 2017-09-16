@@ -2,9 +2,19 @@
 require_once "writter.php";
 
 class KeyValueWritter implements Writter{
+	const BL_KEY = "b:latest";
+
 	protected function write_($key, $value){
 		printf("%s\t%s\n", $key, $value);
 	}
+
+	function bl($bl){
+		$key = self::BL_KEY;
+		$val = $bl;
+
+		$this->write_($key,	$val);
+	}
+
 
 	function in($tx, $txoutput, $no){
 		$key = "t:" . txno($tx) . ":i:" . txno($txoutput, $no);
