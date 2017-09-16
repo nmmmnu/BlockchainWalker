@@ -8,7 +8,7 @@ class KeyValueWritter implements Writter{
 		printf("%s\t%s\n", $key, $value);
 	}
 
-	function bl($bl){
+	function bl($bl, & $data){
 		$key = self::BL_KEY;
 		$val = $bl;
 

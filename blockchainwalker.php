@@ -30,22 +30,26 @@ class BlockchainWalker{
 	function walk(){
 		$count = 0;
 
-		while(true){
+		while($this->currentBlock){
 			$this->currentBlock = $this->bl_($this->currentBlock);
-
-		//	if ($count++ > 100)
-		//		exit;
 		}
+
+		echo "No more blocks. Finished!\n";
 	}
 
 	private function bl_($bl){
 		$data = $this->validate__($this->rpc->getBl($bl));
 
+		$this->writter->bl($bl, $data);
+
 		foreach($data["tx"] as $tx){
 			$this->tx_($tx);
 		}
 
-		return $data["nextblockhash"];
+		if (isset($data["nextblockhash"]))
+			return $data["nextblockhash"];
+		else
+			return false;
 	}
 
 	private function tx_($tx){

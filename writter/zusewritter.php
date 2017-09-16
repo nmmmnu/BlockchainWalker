@@ -16,7 +16,7 @@ class ZuseWritter extends KeyValueWritter{
 	function getLastBlock($def){
 		$bl = $this->r->get(self::BL_KEY);
 
-		return ! isempty($bl) ? $bl : $def;
+		return ! empty($bl) ? $bl : $def;
 	}
 }
 

@@ -3,6 +3,8 @@ error_reporting(E_ALL);
 
 require_once "blockchainwalker.php";
 
+require_once "writter/logwritter.php";
+
 require_once "writter/blackholewritter.php";
 require_once "writter/commentwritter.php";
 require_once "writter/keyvaluewritter.php";

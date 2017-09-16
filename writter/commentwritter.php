@@ -14,7 +14,7 @@ class CommentWritter implements Writter{
 		return $tx . "." . $no;
 	}
 
-	function bl($bl){
+	function bl($bl, & $data){
 
 	}
 

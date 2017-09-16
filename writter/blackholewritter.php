@@ -2,7 +2,7 @@
 require_once "writter.php";
 
 class BlackHoleWritter implements Writter{
-	function bl($bl){
+	function bl($bl, & $data){
 
 	}
 
