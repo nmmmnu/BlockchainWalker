@@ -32,6 +32,8 @@ Most of this time is spend of bitcoind.
 
 HM4 is very fast key value database with Redis interface.
 
+https://github.com/nmmmnu/HM4
+
 ---
 ### Locating the balance of Bitcoin address
 
